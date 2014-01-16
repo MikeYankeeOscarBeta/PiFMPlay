@@ -20,8 +20,7 @@ Install sox and ffmpeg with:
 
 Attach an antenna to GPIO4 on your raspberry pi.
 
-###Test it: 
-cd into your pifmplay directory
+###Test it:
 
 >sudo sh pifmplay . 91.3
 
