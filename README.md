@@ -14,7 +14,7 @@ Put pifmplay on your pi (e.g /home/pi).
 Allow it to be run as a program:
 >sudo chmod +x pifmplay
 
->sudo chmod +c pifm
+>sudo chmod +x pifm
 
 Install sox and ffmpeg with:
 >sudo apt-get install ffmpeg sox libsox-fmt-all 
