@@ -68,7 +68,7 @@ Check if there is an update to pifm here:
 - Youtube stream (might be possible with [youtube-dl](http://www.raspberrypi.org/phpBB3/viewtopic.php?p=97710))
 - di.fm/soundcloud/spotify/pandora streaming
 
-####If you get in troube usign this, IT'S ON YOU:
+####If you get in troube using this, IT'S ON YOU:
 The raspberry pi can be made into a powerful fm-transmitter, if you filter and amplify the signal. 
 But using a powerful fm-transmitter without a proper licence is illegal in most countries.
 So if you break any laws and get fined for it, it's YOUR OWN FAULT!!
