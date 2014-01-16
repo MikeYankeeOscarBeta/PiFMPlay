@@ -7,6 +7,7 @@ PiFMPlay makes it easier to play music and control your FM-Broadcast.
 PiFM is written by [Icrobotics](http://www.icrobotics.co.uk/wiki/index.php)
 
 PiFMPlay is written by Mikael Jakhelln.
+"It's not pretty, but i works." - MJ
 
 ##How to use it:
 Put pifmplay on your pi (e.g /home/pi).
