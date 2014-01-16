@@ -1,0 +1,193 @@
+#!/bin/sh
+
+# Written by Mikael Jakhelln
+# Full Tutorial for installation and use is found on www.instructables.com under username Mickey_Boy
+# Play with it as you will.
+# ;)
+# usage:
+# sudo sh fmplay.sh "/path/to/folder/with/mp3/files/" frequency
+# examples:
+# sudo sh fmplay.sh "../sounds/Daft punk/Daft Punk - One More Time.mp3" 91.3
+
+# Variables:
+# if there is a second parameter, use it as frequency instead.
+if [ $# -eq 2 ]; then
+  frequency=$2
+else
+  # Default frequency, you can change it if you want
+  frequency=91.3
+fi
+
+# saving the folderpath for easier use
+folderpath=`pwd`;
+# echo "you are in folder $folderpath";
+
+# the folder pifmplay is in. (the folder the script runs from)
+pifmplayfolder=$(dirname $0);
+
+
+# echo "Broadcast Frequency = $frequency";
+# this is what pifmplay is asked to play
+thingtoplay=$1;
+
+# Functions:
+pause() {
+  # pauses the stream of music to pifm by pausing the program doing the conversion
+  # this works(ish), but pifm is stuck with the last buffer, so doesn't sound good. now how do we fix that? maybe make a temporary nosound buffer and force feed pifm with it?
+  echo "Pausing fm-broadcast"
+  pkill -STOP ffmpeg
+  pkill -STOP sox
+}
+resume() {
+  # it does what it says it does, or does it?
+  echo "Resuming FM-broadcast"
+  pkill -CONT ffmpeg
+  pkill -CONT sox
+}
+next() {
+	# kills pifm, and that makes pifmplay continue to the next item in list (if there is any)
+	pkill pifm
+}
+stop() {
+	# slaughers pifmplay (and everything that goes with it)
+	for i in `ps aux | grep pifmplay | awk '{print $2}'`;
+	do
+	{
+		sudo kill $i
+	}
+	done
+}
+
+# Lots of different ways to play files here...
+playwav() {
+        echo "DEBUG: playwav"
+	# this wont work with most wavs, so it should be modified to decode/recode the .wav file to the correct format so pifm will accept it.
+	# .wav must be 16bit 22050khz.
+	# maybe it would work to convert it to a wav with the correct format, then feed it to pifm
+	# $pifmplayfolder/pifm "$1" $2
+	# ffmpeg works for wav too :)
+	playmp3ffmpeg "$1" $2	
+}
+playm4a() {
+	# lol, you can use ffmpeg for m4a-2-wav :), sox doen't like m4a tho :(
+	playmp3ffmpeg "$1" $2
+}
+
+playstream() {
+  echo "DEBUG: playstream"
+  #plays a stream from the internet
+  #plays a bbc stream by default, since idk about any online music/sound streams. definately room for improvement here if needed ;)
+  sox -v .9 -t mp3 http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk -t wav --input-buffer 80000 -r 22050 -c 1 - | sudo $pifmplayfolder/pifm - $2
+}
+
+playmp3ffmpeg() {
+  echo "DEBUG: playmp3ffmpeg"
+  # ffmpeg converts the mp3 file to a wav stream, that stream is piped to pifm, pifm then transmits it over fm-radio via gpio 4
+  ffmpeg -i "$1" -f s16le -ar 22.05k -ac 1 - | sudo $pifmplayfolder/pifm - $2
+}
+
+playmp3sox() {
+  echo "DEBUG: playmp3sox"
+  # sox converts the mp3 file to a wav stream, that stream is piped to pifm, pifm then transmits it over fm-radio via gpio 4
+  sox -v .9 -t mp3 "$1" -t wav --input-buffer 80000 -r 22050 -c 1 - | sudo $pifmplayfolder/pifm - $2
+}
+#playyoutube() {
+#	# I WANNA STREAM YOUTUBE to PIFM!!
+#	echo "cant do this, yet."
+#}
+#playsoundcloud() {
+#	# I ALSO WANNA STREAM SOUNDCLOUD to PIFM!!
+#	echo "cant do this, yet."
+#}
+
+#playfromvlc() {
+#	vlc "$1" vlc://quit --intf=dummy --no-sout -smem-time-sync --sout='#transcode{acodec=s16l,ab=32,samplerate=44100,channels=1}:std{access=file,mux=dummy,dst=-}' > /tmp/vlcradio &;
+#	sudo $pifmplayfolder/pifm /tmp/vlcradio $2 44100;
+#}
+
+#hijackaudioout() {
+#	# I know there is a way to redirect / pipe all audio out into pifm, but i dont understand it yet. will read!
+#	echo "cant do this, yet."
+#}
+
+playmp3() {
+  echo "DEBUG: playmp3"
+  #default is sox, just because it has less output :P
+  playmp3sox "$1" $2
+}
+
+# method to call on a file
+playfile() {
+	echo "DEBUG: playfile"
+	echo "PiFMPlaying: file $1, frequency $2"
+	# add filetype validation here...
+
+	if echo "$1" | grep -q '.wav$'; then
+        	playwav "$1" $2
+    	elif echo "$1" | grep -q '.mp3$'; then
+		playmp3 "$1" $2
+	elif echo "$1" | grep -q '.m4a$'; then
+		playm4a "$1" $2
+	else
+		echo "Uhm, yeah. I probably can't play that, but i will try"
+		playmp3ffmpeg "$1" $2
+	fi
+	#if [ $file = "*.mp3" ]; then
+	#	playmp3 "$1" $2
+	#elif [ $file = "*.m4a" ]; then
+	#	# its a mpeg4 audio file
+	#	playm4a "$1" $2	
+	#elif [ $file = "*.wav" ];then
+	#	# its a wav play it!
+	#	playwav "$1" $2
+	#else
+	#	#WTF ^^??
+	#	echo "Uhm, yeah. I probably can't play that, but i will try"
+	#	playmp3ffmpeg "$1" $2
+	#fi
+}
+
+# method to loop through all elements in a folder, then try to play it
+playfolder() {
+	# could and should be recursive, but meh.
+	echo "DEBUG: playfolder"
+	#this should play all the files in the folder
+	for file in $1/*;
+	do
+	{
+		playit "$file" $2
+	}
+	done
+}
+
+playit() {
+	if [ -d "$1" ]; then
+		echo "DEBUG: its a folder!"
+		# if the thing is a directory, play all files in that directory
+		playfolder "$1" $2
+	elif [ -f "$1" ]; then
+		echo "DEBUG: its a file!"
+		# its a file.. try to play it!
+		playfile "$1" $2
+	else
+		echo "DEBUG: its something else!"
+		# its not a directory, and its not a file.. :P
+		echo "PiFMPlay cant play that, sorry :("
+	fi
+}
+
+# And now we run it!! ;)
+# if its given one of the control commands as first parameter, do it to it
+if [ "$1" = "pause" ]; then
+	pause
+elif [ "$1" = "resume" ]; then
+	resume
+elif [ "$1" = "next" ]; then
+	next
+elif [ "$1" = "stop" ]; then
+	stop
+else
+	# else we play the thing
+	playit "$thingtoplay" $frequency;
+fi
+
