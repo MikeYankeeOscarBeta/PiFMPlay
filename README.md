@@ -64,7 +64,7 @@ Check if there is an update to pifm here:
 
 Things I would like to see pifmplay do in the future:
 - Redirect all sound output to pifmplay (redirect all alsa sound output).
-- Youtube stream (seems possible with http://www.raspberrypi.org/phpBB3/viewtopic.php?p=97710)
+- Youtube stream (might be possible with [youtube-dl](http://www.raspberrypi.org/phpBB3/viewtopic.php?p=97710))
 - di.fm/soundcloud/spotify/pandora streaming
 
 
