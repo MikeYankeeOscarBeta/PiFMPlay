@@ -72,4 +72,4 @@ Check if there is an update to pifm here:
 The raspberry pi can be made into a powerful fm-transmitter, if you filter and amplify the signal. 
 But using a powerful fm-transmitter without a proper licence is illegal in most countries.
 So if you break any laws and get fined for it, it's YOUR OWN FAULT!!
-But you should be fine as long as you dont attach anything a good antenna to it.
+But it should be fine as long as you don't attach a big antenna to it.
