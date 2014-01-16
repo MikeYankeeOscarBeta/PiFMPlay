@@ -54,12 +54,15 @@ Open another terminal.
 
 >sudo sh pifmplay next
 
-Also you might want to check if there is an update to pifm here: 
+To control pifmplay from the same terminal, run pifm in the background:
+>sudo sh pifmplay "/path/to/folder" &
+(tho you might want to remove the text output)
+
+Check if there is an update to pifm here: 
 [icrobotics.co.uk](http://www.icrobotics.co.uk/wiki/index.php/Turning_the_Raspberry_Pi_Into_an_FM_Transmitter)
 
 
-
-Things I would like to see:
+Things I would like to see pifmplay do in the future:
 - Redirect all sound output to pifmplay (redirect all alsa sound output).
 - Youtube stream (seems possible with http://www.raspberrypi.org/phpBB3/viewtopic.php?p=97710)
 - di.fm/soundcloud/spotify/pandora streaming
