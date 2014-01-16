@@ -40,7 +40,7 @@ this will play a file with pifm.
 
 (this will play a file with pifm on frequency 101.5)
 
-###How to Pause/Skip/Stop broadcast
+###How to Pause/Stop broadcast and skip songs:
 Open another terminal.
 
 >sudo sh pifmplay pause
