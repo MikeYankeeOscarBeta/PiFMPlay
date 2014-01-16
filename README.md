@@ -4,9 +4,9 @@ Its an addon for pifm(a program to transmit FM-Radio) for the raspberry pi mini 
 
 PiFMPlay makes it easier to play music and control your FM-Broadcast.
 
-Pifm is written by [Icrobotics](http://www.icrobotics.co.uk/wiki/index.php)
+PiFM is written by [Icrobotics](http://www.icrobotics.co.uk/wiki/index.php)
 
-Pifmplay is written by Mikael Jakhelln.
+PiFMPlay is written by Mikael Jakhelln.
 
 ##How to use it:
 Put pifmplay on your pi (e.g /home/pi).
