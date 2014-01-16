@@ -8,6 +8,10 @@ Pifm is written by [Icrobotics](http://www.icrobotics.co.uk/wiki/index.php)
 Pifmplay is written by Mikael Jakhelln.
 
 ##How to use it:
+
+Install sox and ffmpeg with:
+>sudo apt-get install ffmpeg sox libsox-fmt-all 
+
 Attach an antenna to GPIO4 on your raspberry pi.
 
 Put pifmplay on your pi (e.g /home/pi).
@@ -15,10 +19,10 @@ Put pifmplay on your pi (e.g /home/pi).
 Allow it to be run as a program:
 >sudo chmod +x pifmplay
 
-
 >sudo chmod +c pifm
 
-###Test it with: 
+###Test it: 
+cd into your pifmplay directory
 
 >sudo sh pifmplay . 91.3
 
