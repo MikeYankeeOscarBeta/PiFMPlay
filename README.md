@@ -57,3 +57,11 @@ Open another terminal.
 Also you might want to check if there is an update to pifm here: 
 [icrobotics.co.uk](http://www.icrobotics.co.uk/wiki/index.php/Turning_the_Raspberry_Pi_Into_an_FM_Transmitter)
 
+
+
+Things I would like to see:
+- Redirect all sound from the pi to pifmplay.
+- Youtube stream (seems possible with http://www.raspberrypi.org/phpBB3/viewtopic.php?p=97710)
+- di.fm/soundcloud/spotify/pandora/ streaming
+
+
