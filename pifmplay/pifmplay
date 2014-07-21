@@ -160,6 +160,19 @@ playfolder() {
 	done
 }
 
+playurl() {
+	echo "DEBUG: playurl"
+        echo "PiFMPlaying: URL $1, frequency $2"
+	# TODO: add support for YouTube
+	if echo "$1"|grep -q '^file://'; then
+		#WTF! You pass file URL here?
+		playfile "$(echo $1|sed s#^file://##)" $2
+	else
+		# use ffmpeg, universal file converter, to play URL.
+		playmp3ffmpeg "$1" $2
+	fi
+}
+
 playit() {
 	if [ -d "$1" ]; then
 		echo "DEBUG: its a folder!"
@@ -169,6 +182,9 @@ playit() {
 		echo "DEBUG: its a file!"
 		# its a file.. try to play it!
 		playfile "$1" $2
+	elif echo "$1"|grep -q '://'; then
+		echo "DEBUG: its an URL!"
+		playurl "$1" $2
 	else
 		echo "DEBUG: its something else!"
 		# its not a directory, and its not a file.. :P
