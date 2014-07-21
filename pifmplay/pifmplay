@@ -91,10 +91,21 @@ playmp3sox() {
   # sox converts the mp3 file to a wav stream, that stream is piped to pifm, pifm then transmits it over fm-radio via gpio 4
   sox -v .9 -t mp3 "$1" -t wav --input-buffer 80000 -r 22050 -c 1 - | sudo $pifmplayfolder/pifm - $2
 }
-#playyoutube() {
-#	# I WANNA STREAM YOUTUBE to PIFM!!
-#	echo "cant do this, yet."
-#}
+playyoutube() {
+	echo "DEBUG: playyoutube"
+	# Use youtube-dl to fetch raw URL.
+
+	URL=$1
+	# TODO: Handle other kind of YouTube URL
+	# than normal "http://youtube.com/watch?v=..."
+
+	printf "Running youtube-dl to fetch video's raw URL, please wait..."
+	rawURLsList="$(youtube-dl -g -f 140 $URL)"
+	printf 'Done!\n'
+	echo "$rawURLsList"|while read rawURL; do # to support playlist
+		playmp3ffmpeg "$rawURL" $2
+	done
+}
 #playsoundcloud() {
 #	# I ALSO WANNA STREAM SOUNDCLOUD to PIFM!!
 #	echo "cant do this, yet."
@@ -167,6 +178,8 @@ playurl() {
 	if echo "$1"|grep -q '^file://'; then
 		#WTF! You pass file URL here?
 		playfile "$(echo $1|sed s#^file://##)" $2
+	elif echo "$1"|grep -q 'youtube.com'; then
+		playyoutube "$1" $2
 	else
 		# use ffmpeg, universal file converter, to play URL.
 		playmp3ffmpeg "$1" $2
