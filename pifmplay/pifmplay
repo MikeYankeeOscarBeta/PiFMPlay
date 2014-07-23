@@ -99,10 +99,8 @@ playyoutube() {
 	# TODO: Handle other kind of YouTube URL
 	# than normal "http://youtube.com/watch?v=..."
 
-	printf "Running youtube-dl to fetch video's raw URL, please wait..."
-	rawURLsList="$(youtube-dl -g -f 140 $URL)"
-	printf 'Done!\n'
-	echo "$rawURLsList"|while read rawURL; do # to support playlist
+	echo "Running youtube-dl to fetch video's raw URL, please wait..."
+	youtube-dl -g -f 140 "$URL"|while read rawURL; do # to support playlist
 		playmp3ffmpeg "$rawURL" $2
 	done
 }
