@@ -80,6 +80,14 @@ playstream() {
   sox -v .9 -t mp3 http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk -t wav --input-buffer 80000 -r 22050 -c 1 - | sudo $pifmplayfolder/pifm - $2
 }
 
+playpipe() {
+  echo "DEBUG: playpipe"
+  #plays a stream supplied by pipe
+  #over ssh: e.g. cat <audio file> | ssh pi@raspberrypi 'cat - | /home/pi/PiFMPlay/pifmplay/pifmplay PIPE 91.3'
+  #or locally: cat /path/to/file | /home/pi/PiFMPlay/pifmplay/pifmplay PIPE 91.3
+  cat /dev/stdin | ffmpeg -i pipe:0 -f s16le -ar 22.05k -ac 1 - | sudo $pifmplayfolder/pifm - $2
+}
+
 playmp3ffmpeg() {
   echo "DEBUG: playmp3ffmpeg"
   # ffmpeg converts the mp3 file to a wav stream, that stream is piped to pifm, pifm then transmits it over fm-radio via gpio 4
@@ -137,6 +145,8 @@ playfile() {
 		playmp3 "$1" $2
 	elif echo "$1" | grep -q '.m4a$'; then
 		playm4a "$1" $2
+	elif [ "$1" == "PIPE" ]; then
+		playpipe "$1" $2
 	else
 		echo "Uhm, yeah. I probably can't play that, but i will try"
 		playmp3ffmpeg "$1" $2
