@@ -145,8 +145,6 @@ playfile() {
 		playmp3 "$1" $2
 	elif echo "$1" | grep -q '.m4a$'; then
 		playm4a "$1" $2
-	elif [ "$1" == "PIPE" ]; then
-		playpipe "$1" $2
 	else
 		echo "Uhm, yeah. I probably can't play that, but i will try"
 		playmp3ffmpeg "$1" $2
@@ -206,6 +204,8 @@ playit() {
 	elif echo "$1"|grep -q '://'; then
 		echo "DEBUG: its an URL!"
 		playurl "$1" $2
+	elif [ "$1" = "PIPE" ]; then
+		playpipe "$1" $2
 	else
 		echo "DEBUG: its something else!"
 		# its not a directory, and its not a file.. :P
