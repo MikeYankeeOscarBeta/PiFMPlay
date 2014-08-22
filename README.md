@@ -38,11 +38,19 @@ Attach an antenna to GPIO4 on your raspberry pi.
 
 this will play a file with pifm.
 
+###Play from a pipe
+
+>cat /path/to/file | sudo pifmplay PIPE
+
+to play a file locally (the cat command only being an example here).
+
+>cat <audio file> | ssh pi@raspberrypi 'cat - | sudo /home/pi/pifmplay/pifmplay PIPE'
+
+play a file from your local pc over ssh on the raspberry pi.
+
 ###Play a folder with:
 
 >sudo sh pifmplay "/path/to/folder" 101.5
-
-(this will play all files in the specified directory with pifm on frequency 101.5)
 
 ###How to Pause/Stop broadcast and skip songs:
 Open another terminal.
