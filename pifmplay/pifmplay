@@ -169,11 +169,14 @@ playfolder() {
 	# could and should be recursive, but meh.
 	echo "DEBUG: playfolder"
 	#this should play all the files in the folder
+	while :
+	do
 	for file in $1/*;
 	do
 	{
 		playit "$file" $2
 	}
+	done
 	done
 }
 
