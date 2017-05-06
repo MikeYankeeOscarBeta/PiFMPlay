@@ -17,6 +17,14 @@ else
   # Default frequency, you can change it if you want
   frequency=91.3
 fi
+# cleaning gpio pin 4 when keyboard interupter is called CONTROL + C
+trap control_c INT
+
+control_c(){
+echo "4" > /sys/class/gpio/export
+echo "out" > /sys/class/gpio/gpio4/direction
+echo "4" > /sys/class/gpio/unexport
+}
 
 # saving the folderpath for easier use
 folderpath=`pwd`;
