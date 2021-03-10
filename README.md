@@ -1,6 +1,6 @@
 PiFMPlay
 ========
-Its an addon for pifm(a program to transmit FM-Radio) for the raspberry pi mini computer.
+Its an addon for PiFM, a program to transmit FM-Radio for the raspberry pi mini computer.
 
 PiFMPlay makes it easier to play music and control your FM-Broadcast.
 
