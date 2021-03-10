@@ -9,13 +9,35 @@
 # examples:
 # sudo sh fmplay.sh "../sounds/Daft punk/Daft Punk - One More Time.mp3" 91.3
 
+
+
+
+
 # Variables:
+
+#first default the freq, but overwrite if needed (see below)
+frequency=91.3
+#shuffle defaults to false but is set to true if found in params
+shuffle=false
+
 # if there is a second parameter, use it as frequency instead.
-if [ $# -eq 2 ]; then
-  frequency=$2
+if [ $# -ge 2 ]; then
+
+# make sure the second parameter isnt command to shuffle, if it is, use default freq
+if [ "$2" = "s" ]; then
+  shuffle=true
+echo "SHUFFLE HAS BEEN TURNED ON"
 else
-  # Default frequency, you can change it if you want
-  frequency=91.3
+  frequency=$2
+fi
+fi
+
+#if there a 3rd param, it may be shuffle being requested
+if [ $# -eq 3 ]; then
+	if [ "$3" = "s" ]; then
+  shuffle=true
+echo "SHUFFLE HAS BEEN TURNED ON"
+fi
 fi
 # cleaning gpio pin 4 when keyboard interupter is called CONTROL + C
 trap control_c INT
@@ -174,18 +196,36 @@ playfile() {
 
 # method to loop through all elements in a folder, then try to play it
 playfolder() {
-	# could and should be recursive, but meh.
-	echo "DEBUG: playfolder"
-	#this should play all the files in the folder
-	while :
-	do
-	for file in $1/*;
-	do
-	{
-		playit "$file" $2
-	}
-	done
-	done
+# could and should be recursive, but meh.
+echo "DEBUG: playfolder"
+#this should play all the files in the folder
+while :
+do
+for file in $1/*;
+do
+{
+playit "$file" $2
+}
+done
+done
+}
+
+# shuffles a folders files to play
+playfoldershuffle() {
+echo "DEBUG: playfoldershuffle"
+#this should play all the files in the folder
+while :
+do
+
+ls $1 |sort -R |tail -$N |while read file; do
+playit "$1/$file" $2
+    # Something involving $file, or you can leave
+    # off the while to just get the filenames
+done
+done
+
+
+
 }
 
 playurl() {
@@ -204,10 +244,16 @@ playurl() {
 }
 
 playit() {
+echo "playing $1"
 	if [ -d "$1" ]; then
 		echo "DEBUG: its a folder!"
 		# if the thing is a directory, play all files in that directory
+	if [ $shuffle = true ]; then
+	echo "DEBUG: playing shuffled as requested"
+		playfoldershuffle "$1" $2
+	else
 		playfolder "$1" $2
+		fi
 	elif [ -f "$1" ]; then
 		echo "DEBUG: its a file!"
 		# its a file.. try to play it!
