@@ -261,7 +261,7 @@ public:
     // this isn't the right filter...  But it's close...
     // Something todo with a bilinear transform not being right...
     PreEmp(float rate, SampleSink* next): 
-        fmconstant(rate * 75.0e-6), // for pre-emphisis filter.  75us time constant
+        fmconstant(rate * 50.0e-6), // for pre-emphasis filter.  50us time constant
         dataold(0),
         next(next) { };
     
