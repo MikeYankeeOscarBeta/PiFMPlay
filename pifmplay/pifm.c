@@ -24,6 +24,7 @@
 
 #define PAGE_SIZE (4*1024)
 #define BLOCK_SIZE (4*1024)
+#define PREEMP_TIME_CONST 50.0e-6 // 50us. Change to 75us if you are in USA or South Korea
 
 #define PI 3.14159265
 
@@ -261,7 +262,7 @@ public:
     // this isn't the right filter...  But it's close...
     // Something todo with a bilinear transform not being right...
     PreEmp(float rate, SampleSink* next): 
-        fmconstant(rate * 50.0e-6), // for pre-emphasis filter.  50us time constant
+        fmconstant(rate * PREEMP_TIME_CONST), // for pre-emphasis filter. 50us/75us time constant
         dataold(0),
         next(next) { };
     
